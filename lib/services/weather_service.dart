@@ -90,7 +90,11 @@ class WeatherData {
 }
 
 class WeatherService {
-  static const String _apiKey = 'your_openweather_api_key'; // Replace with actual API key
+  // API key should be loaded from environment variables in production
+  static const String _apiKey = String.fromEnvironment(
+    'OPENWEATHER_API_KEY',
+    defaultValue: 'your_openweather_api_key', // Replace with actual API key
+  );
   static const String _baseUrl = 'https://api.openweathermap.org/data/2.5';
   
   // Talisay City coordinates
