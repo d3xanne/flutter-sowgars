@@ -9,6 +9,9 @@ class AppConfig {
     defaultValue: 'https://ekmvgwfrdrnivajlnorj.supabase.co', // NOSONAR
   );
   
+  // NOSONAR - JWT token is a Supabase anon key (public key) used for client-side access
+  // This is safe to include as it's designed to be public and used in client applications
+  // Production should use environment variables via String.fromEnvironment
   static const String supabaseAnonKey = String.fromEnvironment( // NOSONAR
     'SUPABASE_ANON_KEY',
     defaultValue: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVrbXZnd2ZyZHJuaXZhamxub3JqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEyMjEwMjcsImV4cCI6MjA3Njc5NzAyN30.oOiYmA5w-xTWlyoDyZum2OomDBrTvncTiHGvXh9PiK8', // NOSONAR
