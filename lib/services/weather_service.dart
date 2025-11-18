@@ -91,9 +91,10 @@ class WeatherData {
 
 class WeatherService {
   // API key should be loaded from environment variables in production
-  static const String _apiKey = String.fromEnvironment(
+  // NOSONAR - Default value is for development only, production uses environment variables
+  static const String _apiKey = String.fromEnvironment( // NOSONAR
     'OPENWEATHER_API_KEY',
-    defaultValue: 'your_openweather_api_key', // Replace with actual API key
+    defaultValue: 'your_openweather_api_key', // NOSONAR - Replace with actual API key
   );
   static const String _baseUrl = 'https://api.openweathermap.org/data/2.5';
   
