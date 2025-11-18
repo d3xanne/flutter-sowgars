@@ -26,20 +26,11 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Run tests with coverage
+      - name: Build
         run: flutter test --coverage
-
-      - name: Fix coverage paths
-        run: |
-          if (Test-Path "coverage\lcov.info") {
-            $content = Get-Content "coverage\lcov.info" -Raw
-            $content = $content -replace '\\', '/'
-            Set-Content -Path "coverage\lcov.info" -Value $content -NoNewline
-          }
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
