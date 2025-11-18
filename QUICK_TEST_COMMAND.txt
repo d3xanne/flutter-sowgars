@@ -1,0 +1,24 @@
+Quick Test Commands for Hacienda Elizabeth
+===========================================
+
+Your Flutter app is running on: http://localhost:3000
+
+To run Cypress tests, open a NEW terminal window and run:
+
+cd C:\Users\Dex\Desktop\flutter\sowgars
+C:\Program Files\nodejs\npx.cmd cypress run --spec "cypress/e2e/app-loading.cy.js"
+
+This will:
+- Run the app loading test
+- Automatically take screenshots
+- Record a video
+- Show results in the terminal
+- Save results to cypress/screenshots/ and cypress/videos/
+
+After the test completes, you'll see:
+- Screenshot files in: cypress/screenshots/app-loading/
+- Video file in: cypress/videos/app-loading.cy.js.mp4
+- Test results in the terminal
+
+To run all tests:
+C:\Program Files\nodejs\npx.cmd cypress run

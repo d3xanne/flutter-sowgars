@@ -1,0 +1,24 @@
+{
+  "name": "hacienda-elizabeth-testing",
+  "version": "1.0.0",
+  "description": "Testing suite for Hacienda Elizabeth Agricultural Management System",
+  "main": "index.js",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:run:headless": "cypress run --headless",
+    "test": "cypress run"
+  },
+  "keywords": [
+    "testing",
+    "cypress",
+    "e2e",
+    "agriculture",
+    "farm-management"
+  ],
+  "author": "Hacienda Elizabeth Team",
+  "license": "MIT",
+  "devDependencies": {
+    "cypress": "^13.6.2"
+  }
+}

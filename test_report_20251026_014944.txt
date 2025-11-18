@@ -1,0 +1,149 @@
+HACIENDA ELIZABETH - TEST REPORT
+==================================================
+Generated: 2025-10-26 01:49:44
+
+SUMMARY:
+Total Tests: 3
+Passed: 3
+Failed: 0
+Success Rate: 100.0%
+
+DETAILED RESULTS:
+------------------------------
+
+Simple Connectivity Test - PASS (31.74s)
+--------------------
+STDOUT:
+Simple Test - Hacienda Elizabeth
+========================================
+Found Chrome at: C:\Program Files\Google\Chrome\Application\chrome.exe
+Creating Chrome driver...
+SUCCESS: Chrome driver created
+Navigating to application...
+Waiting for page to load...
+Page title: Hacienda Elizabeth - Agricultural Management System
+SUCCESS: Flutter app elements found
+WARNING: No text content found
+Screenshot saved: simple_test_screenshot.png
+Simple test completed successfully!
+
+
+Advanced Flutter Test - PASS (34.00s)
+--------------------
+STDOUT:
+Advanced Test - Hacienda Elizabeth
+==================================================
+Creating Chrome driver...
+SUCCESS: Chrome driver created
+Navigating to application...
+Waiting for Flutter app to load...
+
+--- Test 1: App Loading ---
+SUCCESS: Flutter app loaded
+
+--- Test 2: Navigation Elements ---
+WARNING: Not found 'Sugar Records'
+WARNING: Not found 'Inventory'
+WARNING: Not found 'Suppliers'
+WARNING: Not found 'Generate Insight'
+WARNING: Not found 'View Insights'
+WARNING: Not found 'Settings'
+Navigation Summary: 0/6 elements found
+
+--- Test 3: Sugar Records Navigation ---
+ERROR: Could not navigate to Sugar Records: Message: no such element: Unable to locate element: {"method":"xpath","selector":"//*[contains(text(), 'Sugar Records')]"}
+  (Session info: chrome=141.0.7390.123); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+	GetHandleVerifier [0x0x7ff70f89e8e5+80021]
+	GetHandleVerifier [0x0x7ff70f89e940+80112]
+	(No symbol) [0x0x7ff70f62060f]
+	(No symbol) [0x0x7ff70f678854]
+	(No symbol) [0x0x7ff70f678b1c]
+	(No symbol) [0x0x7ff70f6cc927]
+	(No symbol) [0x0x7ff70f6a126f]
+	(No symbol) [0x0x7ff70f6c968a]
+	(No symbol) [0x0x7ff70f6a1003]
+	(No symbol) [0x0x7ff70f6695d1]
+	(No symbol) [0x0x7ff70f66a3f3]
+	GetHandleVerifier [0x0x7ff70fb5dc7d+2960429]
+	GetHandleVerifier [0x0x7ff70fb57f3a+2936554]
+	GetHandleVerifier [0x0x7ff70fb78977+3070247]
+	GetHandleVerifier [0x0x7ff70f8b83ce+185214]
+	GetHandleVerifier [0x0x7ff70f8bfe1f+216527]
+	GetHandleVerifier [0x0x7ff70f8a7b24+117460]
+	GetHandleVerifier [0x0x7ff70f8a7cdf+117903]
+	GetHandleVerifier [0x0x7ff70f88dbb8+11112]
+	BaseThreadInitThunk [0x0x7ffa130d7344+20]
+	RtlUserThreadStart [0x0x7ffa142426b1+33]
+
+
+--- Test 4: Add Button Test ---
+WARNING: No Add buttons found
+
+--- Test 5: Form Elements Test ---
+SUCCESS: Found 0 input fields
+SUCCESS: Found 0 textarea fields
+SUCCESS: Found 0 select fields
+WARNING: No form elements found
+
+--- Test 6: Notification System Test ---
+WARNING: No notification elements found
+
+--- Test 7: Screenshot Test ---
+SUCCESS: Screenshot saved: advanced_test_screenshot.png
+
+--- Test 8: Flutter Elements Analysis ---
+SUCCESS: Found Flutter indicator: flt-glass-pane
+SUCCESS: Found Flutter indicator: flt-semantics
+SUCCESS: Found Flutter indicator: flutter-view
+Flutter Analysis: 3/4 indicators found
+
+==================================================
+Advanced test completed successfully!
+Your Flutter app is accessible and functional for testing!
+
+
+Flutter-Specific Test - PASS (47.70s)
+--------------------
+STDOUT:
+Flutter Test - Hacienda Elizabeth
+==================================================
+Creating Chrome driver...
+SUCCESS: Chrome driver created
+Navigating to application...
+Waiting for Flutter app to load...
+
+--- Test 1: Flutter App Structure ---
+SUCCESS: Found 1 Flutter glass panes
+WARNING: No Flutter semantics elements found
+
+--- Test 2: Clickable Elements ---
+SUCCESS: Found 1 clickable elements
+  Element 1: Enable accessibility
+
+--- Test 3: Text Content Analysis ---
+WARNING: No text content found
+
+--- Test 4: Coordinate-based Interaction ---
+Window size: 1920x1080
+SUCCESS: Clicked in center of screen
+SUCCESS: Clicked in quadrant 1
+SUCCESS: Clicked in quadrant 2
+SUCCESS: Clicked in quadrant 3
+SUCCESS: Clicked in quadrant 4
+
+--- Test 5: Form Elements Detection ---
+Found 0 input elements
+Found 0 form-like elements
+Found 0 button elements
+
+--- Test 6: Page Source Analysis ---
+SUCCESS: Found content in page source: ['Hacienda Elizabeth']
+
+--- Test 7: Final Screenshot ---
+SUCCESS: Screenshot saved: flutter_test_screenshot.png
+
+==================================================
+Flutter test completed!
+Your Flutter app is running and accessible for testing!
+

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FARM Hub Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 1200px;
+        }
+        h1 {
+            color: #2E7D32;
+            text-align: center;
+        }
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        canvas {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #2E7D32;
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        button {
+            padding: 12px 24px;
+            background: #2E7D32;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #1B5E20;
+        }
+        .info {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #2E7D32;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌾 FARM Hub - Sugarcane App Icon Generator</h1>
+        
+        <div class="info">
+            <strong>Instructions:</strong>
+            <ol>
+                <li>Click "Generate Icon" to create a high-quality icon</li>
+                <li>Right-click on the icon and select "Save image as..."</li>
+                <li>Save it as <code>app_icon.png</code> in <code>assets/icons/</code> folder</li>
+                <li>Run <code>flutter pub run flutter_launcher_icons</code> to generate all sizes</li>
+            </ol>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="iconCanvas" width="1024" height="1024"></canvas>
+        </div>
+
+        <div class="controls">
+            <button onclick="generateIcon()">🌾 Generate Sugarcane Icon</button>
+            <button onclick="downloadIcon()">💾 Download Icon (PNG)</button>
+        </div>
+
+        <div class="info">
+            <strong>Icon Specifications:</strong>
+            <ul>
+                <li>Size: 1024x1024 pixels (high resolution)</li>
+                <li>Background: #2E7D32 (Forest Green)</li>
+                <li>Foreground: White (#FFFFFF) sugarcane plant silhouette</li>
+                <li>Format: PNG with crisp edges</li>
+                <li>Safe Zone: 80% (prevents clipping)</li>
+                <li>Style: Minimalist sugarcane stalks with leaves</li>
+                <li>Design: Three sugarcane stalks with characteristic segments and leaves</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function generateIcon() {
+            const canvas = document.getElementById('iconCanvas');
+            const ctx = canvas.getContext('2d');
+            const size = 1024;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Set high-quality rendering
+            ctx.imageSmoothingEnabled = false; // Crisp edges
+            ctx.imageSmoothingQuality = 'high';
+            
+            // Fill background
+            ctx.fillStyle = '#2E7D32';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Calculate safe zone (80% of size)
+            const safeZone = size * 0.8;
+            const padding = (size - safeZone) / 2;
+            
+            // Set drawing style
+            ctx.fillStyle = '#FFFFFF';
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 0;
+            
+            // Draw minimalist sugarcane plant icon
+            
+            const centerX = size / 2;
+            const stalkWidth = safeZone * 0.08;
+            const stalkHeight = safeZone * 0.65;
+            const stalkY = size * 0.2; // Start from top with padding
+            const stalkX = centerX - stalkWidth / 2;
+            
+            // Draw 3 sugarcane stalks (main crop representation)
+            const stalkSpacing = safeZone * 0.12;
+            const stalks = [
+                centerX - stalkSpacing, // Left stalk
+                centerX,                // Center stalk (tallest)
+                centerX + stalkSpacing  // Right stalk
+            ];
+            
+            stalks.forEach((stalkCenterX, index) => {
+                const isCenter = index === 1;
+                const currentStalkHeight = isCenter ? stalkHeight : stalkHeight * 0.85;
+                const currentStalkWidth = isCenter ? stalkWidth : stalkWidth * 0.9;
+                const currentStalkX = stalkCenterX - currentStalkWidth / 2;
+                
+                // Main stalk (vertical rectangle with rounded top)
+                ctx.fillRect(
+                    currentStalkX,
+                    stalkY,
+                    currentStalkWidth,
+                    currentStalkHeight
+                );
+                
+                // Rounded top of stalk
+                ctx.beginPath();
+                ctx.arc(
+                    stalkCenterX,
+                    stalkY,
+                    currentStalkWidth / 2,
+                    Math.PI,
+                    0,
+                    false
+                );
+                ctx.fill();
+                
+                // Joints/segments on the stalk (characteristic of sugarcane)
+                const segmentCount = 6;
+                const segmentHeight = currentStalkHeight / segmentCount;
+                ctx.strokeStyle = '#2E7D32';
+                ctx.lineWidth = 2;
+                for (let i = 1; i < segmentCount; i++) {
+                    const segmentY = stalkY + segmentHeight * i;
+                    ctx.beginPath();
+                    ctx.moveTo(currentStalkX, segmentY);
+                    ctx.lineTo(currentStalkX + currentStalkWidth, segmentY);
+                    ctx.stroke();
+                }
+                
+                // Leaves at the top (long, curved)
+                const leafCount = 3;
+                const leafBaseY = stalkY;
+                const leafLength = safeZone * 0.25;
+                
+                for (let i = 0; i < leafCount; i++) {
+                    const leafAngle = (i - 1) * 0.4; // Spread leaves
+                    const leafStartX = stalkCenterX;
+                    const leafStartY = leafBaseY;
+                    const leafEndX = leafStartX + Math.cos(leafAngle) * leafLength;
+                    const leafEndY = leafStartY + Math.sin(leafAngle) * leafLength;
+                    
+                    // Draw leaf as a curved line
+                    ctx.strokeStyle = '#FFFFFF';
+                    ctx.lineWidth = currentStalkWidth * 0.6;
+                    ctx.lineCap = 'round';
+                    ctx.beginPath();
+                    ctx.moveTo(leafStartX, leafStartY);
+                    ctx.quadraticCurveTo(
+                        leafStartX + (leafEndX - leafStartX) * 0.5,
+                        leafStartY - safeZone * 0.1,
+                        leafEndX,
+                        leafEndY
+                    );
+                    ctx.stroke();
+                }
+            });
+            
+            // Reset stroke style
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 1;
+            
+            // Add subtle highlight for depth (optional)
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.fillRect(0, 0, size, size * 0.15);
+            
+            console.log('✅ Sugarcane icon generated!');
+        }
+        
+        function downloadIcon() {
+            const canvas = document.getElementById('iconCanvas');
+            const link = document.createElement('a');
+            link.download = 'app_icon.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            alert('Icon downloaded! Save it to assets/icons/app_icon.png');
+        }
+        
+        // Generate icon on page load
+        window.onload = function() {
+            generateIcon();
+        };
+    </script>
+</body>
+</html>
+

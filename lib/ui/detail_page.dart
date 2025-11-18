@@ -1,0 +1,447 @@
+// REPLACE THE ENTIRE FILE: lib/ui/detail_page.dart
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:sample/models/constants.dart';
+import 'package:sample/widgets/weather_item.dart';
+
+class DetailPage extends StatefulWidget {
+  final List consolidatedWeatherList;
+  final int selectedId;
+  final String location;
+
+  const DetailPage({
+    Key? key,
+    required this.consolidatedWeatherList,
+    required this.selectedId,
+    required this.location,
+  }) : super(key: key);
+
+  @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage>
+    with SingleTickerProviderStateMixin {
+  String imageUrl = '';
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeIn,
+      ),
+    );
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    Constants myConstants = Constants();
+
+    //Create a shader linear gradient
+    final Shader linearGradient = const LinearGradient(
+      colors: <Color>[Color(0xffABCFF2), Color(0xff9AC6F3)],
+    ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+
+    int selectedIndex = widget.selectedId;
+    var weatherStateName =
+        widget.consolidatedWeatherList[selectedIndex]['weather_state_name'];
+    imageUrl = weatherStateName.replaceAll(' ', '').toLowerCase();
+
+    return Scaffold(
+      backgroundColor: myConstants.secondaryColor,
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: myConstants.secondaryColor,
+        elevation: 0.0,
+        title: Text(widget.location),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          tooltip: 'Back to Weather',
+          onPressed: () => Navigator.pop(context),
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+            tooltip: 'Home',
+            icon: const Icon(Icons.home_rounded),
+          )
+        ],
+      ),
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            Positioned(
+              top: 10,
+              left: 10,
+              child: SizedBox(
+                height: 150,
+                width: 400,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: widget.consolidatedWeatherList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var futureWeatherName = widget
+                          .consolidatedWeatherList[index]['weather_state_name'];
+                      var weatherURL =
+                          futureWeatherName.replaceAll(' ', '').toLowerCase();
+                      var parsedDate = DateTime.parse(widget
+                          .consolidatedWeatherList[index]['applicable_date']);
+                      var newDate =
+                          DateFormat('EEEE').format(parsedDate).substring(0, 3);
+
+                      return Container(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        margin: const EdgeInsets.only(right: 20),
+                        width: 80,
+                        decoration: BoxDecoration(
+                            color: index == selectedIndex
+                                ? Colors.white
+                                : const Color(0xff9ebcf9),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: const Offset(0, 1),
+                                blurRadius: 5,
+                                color: Colors.blue.withValues(alpha: .3),
+                              )
+                            ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.consolidatedWeatherList[index]['the_temp']
+                                      .round()
+                                      .toString() +
+                                  "C",
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: index == selectedIndex
+                                    ? Colors.blue
+                                    : Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Icon(
+                              _getWeatherIcon(weatherURL),
+                              color: index == selectedIndex
+                                  ? Colors.blue
+                                  : Colors.white,
+                            ),
+                            Text(
+                              newDate,
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: index == selectedIndex
+                                    ? Colors.blue
+                                    : Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              child: Container(
+                height: size.height * .55,
+                width: size.width,
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(50),
+                      topLeft: Radius.circular(50),
+                    )),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Positioned(
+                      top: -50,
+                      right: 20,
+                      left: 20,
+                      child: Container(
+                        width: size.width * .7,
+                        height: 300,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.center,
+                                colors: [
+                                  Color(0xffa9c1f5),
+                                  Color(0xff6696f5),
+                                ]),
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blue.withValues(alpha: .1),
+                                offset: const Offset(0, 25),
+                                blurRadius: 3,
+                                spreadRadius: -10,
+                              ),
+                            ]),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Positioned(
+                              top: -40,
+                              left: 20,
+                              child: Icon(
+                                _getWeatherIcon(imageUrl),
+                                size: 150,
+                                color: Colors.white.withValues(alpha: 0.8),
+                              ),
+                            ),
+                            Positioned(
+                                top: 120,
+                                left: 30,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 10.0),
+                                  child: Text(
+                                    weatherStateName,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                )),
+                            Positioned(
+                              bottom: 20,
+                              left: 20,
+                              child: Container(
+                                width: size.width * .8,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    weatherItem(
+                                      text: 'Wind Speed',
+                                      value: widget.consolidatedWeatherList[
+                                              selectedIndex]['wind_speed']
+                                          .round(),
+                                      unit: 'km/h',
+                                      imageUrl: 'assets/windspeed.png',
+                                      icon: Icons.air_rounded,
+                                    ),
+                                    weatherItem(
+                                      text: 'Humidity',
+                                      value: widget.consolidatedWeatherList[
+                                              selectedIndex]['humidity']
+                                          .round(),
+                                      unit: '',
+                                      imageUrl: 'assets/humidity.png',
+                                      icon: Icons.water_drop_outlined,
+                                    ),
+                                    weatherItem(
+                                      text: 'Max Temp',
+                                      value: widget.consolidatedWeatherList[
+                                              selectedIndex]['max_temp']
+                                          .round(),
+                                      unit: 'C',
+                                      imageUrl: 'assets/max-temp.png',
+                                      icon: Icons.thermostat_rounded,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 20,
+                              right: 20,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget
+                                        .consolidatedWeatherList[selectedIndex]
+                                            ['the_temp']
+                                        .round()
+                                        .toString(),
+                                    style: TextStyle(
+                                      fontSize: 80,
+                                      fontWeight: FontWeight.bold,
+                                      foreground: Paint()
+                                        ..shader = linearGradient,
+                                    ),
+                                  ),
+                                  Text(
+                                    'o',
+                                    style: TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      foreground: Paint()
+                                        ..shader = linearGradient,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                        top: 300,
+                        left: 20,
+                        child: SizedBox(
+                          height: 200,
+                          width: size.width * .9,
+                          child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: widget.consolidatedWeatherList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var futureWeatherName =
+                                    widget.consolidatedWeatherList[index]
+                                        ['weather_state_name'];
+                                var futureImageURL = futureWeatherName
+                                    .replaceAll(' ', '')
+                                    .toLowerCase();
+                                var myDate = DateTime.parse(
+                                    widget.consolidatedWeatherList[index]
+                                        ['applicable_date']);
+                                var currentDate =
+                                    DateFormat('d MMMM, EEEE').format(myDate);
+                                return Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 10, top: 10, right: 10, bottom: 5),
+                                  height: 80,
+                                  width: size.width,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: myConstants.secondaryColor
+                                              .withValues(alpha: .1),
+                                          spreadRadius: 5,
+                                          blurRadius: 20,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          currentDate,
+                                          style: const TextStyle(
+                                            color: Color(0xff6696f5),
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              widget.consolidatedWeatherList[
+                                                      index]['max_temp']
+                                                  .round()
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            const Text(
+                                              '/',
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 30,
+                                              ),
+                                            ),
+                                            Text(
+                                              widget.consolidatedWeatherList[
+                                                      index]['min_temp']
+                                                  .round()
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 25,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              _getWeatherIcon(futureImageURL),
+                                              color: Colors.blue[300],
+                                            ),
+                                            Text(widget.consolidatedWeatherList[
+                                                index]['weather_state_name']),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ))
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  IconData _getWeatherIcon(String weatherState) {
+    switch (weatherState) {
+      case 'clear':
+        return Icons.wb_sunny_rounded;
+      case 'lightcloud':
+        return Icons.wb_cloudy_rounded;
+      case 'heavycloud':
+        return Icons.cloud_rounded;
+      case 'lightrain':
+        return Icons.grain_rounded;
+      case 'heavyrain':
+        return Icons.water_rounded;
+      case 'showers':
+        return Icons.beach_access_rounded;
+      case 'thunderstorm':
+        return Icons.flash_on_rounded;
+      case 'snow':
+        return Icons.ac_unit_rounded;
+      default:
+        return Icons.cloud_rounded;
+    }
+  }
+}
