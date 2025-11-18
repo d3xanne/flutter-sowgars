@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:sample/utils/number_converter.dart';
 
 class WeatherData {
   final String city;
@@ -46,19 +47,19 @@ class WeatherData {
     return WeatherData(
       city: json['name'] ?? 'Talisay City',
       country: sys['country'] ?? 'PH',
-      temperature: (main['temp'] ?? 0).toDouble(),
-      feelsLike: (main['feels_like'] ?? 0).toDouble(),
+      temperature: NumberConverter.toDouble(main['temp']),
+      feelsLike: NumberConverter.toDouble(main['feels_like']),
       humidity: main['humidity'] ?? 0,
-      windSpeed: (wind['speed'] ?? 0).toDouble(),
+      windSpeed: NumberConverter.toDouble(wind['speed']),
       description: weather['description'] ?? 'Unknown',
       icon: weather['icon'] ?? '01d',
       lastUpdated: DateTime.now(),
-      pressure: (main['pressure'] ?? 0).toDouble(),
+      pressure: NumberConverter.toDouble(main['pressure']),
       visibility: json['visibility'] ?? 0,
       uvIndex: 0.0, // Will be calculated separately
       sunrise: _formatTime(sys['sunrise']),
       sunset: _formatTime(sys['sunset']),
-      maxTemp: (main['temp_max'] ?? main['temp'] ?? 0).toDouble(),
+      maxTemp: NumberConverter.toDouble(main['temp_max'] ?? main['temp']),
     );
   }
 

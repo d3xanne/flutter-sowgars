@@ -3,6 +3,7 @@ import 'package:sample/models/sugar_record.dart';
 import 'package:sample/models/inventory_item.dart';
 import 'package:sample/models/supplier_transaction.dart';
 import 'package:sample/models/alert.dart';
+import 'package:sample/utils/number_converter.dart';
 
 class DataVisualizationWidgets {
   // Growth trend chart
@@ -27,7 +28,7 @@ class DataVisualizationWidgets {
     final sortedRecords = List<SugarRecord>.from(records)
       ..sort((a, b) => a.date.compareTo(b.date));
 
-    final heights = sortedRecords.map((r) => r.heightCm.toDouble()).toList();
+    final heights = sortedRecords.map((r) => NumberConverter.intToDouble(r.heightCm)).toList();
     final maxHeight = heights.reduce((a, b) => a > b ? a : b);
     final minHeight = heights.reduce((a, b) => a < b ? a : b);
 

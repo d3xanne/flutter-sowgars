@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sample/config/app_config.dart';
 
 class SecurityService {
-  static const String _encryptionKey = 'hacienda_elizabeth_2024';
+  static String get _encryptionKey => AppConfig.encryptionKey;
   
   // Simple encryption for sensitive data
   static String encryptData(String data) {

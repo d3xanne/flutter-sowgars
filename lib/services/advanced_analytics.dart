@@ -2,6 +2,7 @@ import 'package:sample/models/sugar_record.dart';
 import 'package:sample/models/inventory_item.dart';
 import 'package:sample/models/supplier_transaction.dart';
 import 'package:sample/models/alert.dart';
+import 'package:sample/utils/number_converter.dart';
 
 class AdvancedAnalytics {
   // Comprehensive dashboard metrics
@@ -310,7 +311,7 @@ class AdvancedAnalytics {
     final unreadAlerts = alerts.where((a) => !a.read).length;
     if (unreadAlerts > 5) healthScore -= 10;
     
-    return healthScore.clamp(0, 100).toDouble();
+    return NumberConverter.intToDouble(healthScore.clamp(0, 100));
   }
 
   static String _getGrowthRecommendation(String trend, double averageGrowth, double growthRate) {

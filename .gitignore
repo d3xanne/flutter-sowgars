@@ -103,6 +103,8 @@ reports/
 
 # SonarQube
 sonarqube-*/
+sonar-scanner-*/
+.scannerwork/
 
 # Build artifacts
 build/

@@ -4,6 +4,7 @@ import 'package:sample/models/inventory_item.dart';
 import 'package:sample/models/supplier_transaction.dart';
 import 'package:sample/models/alert.dart';
 import 'package:sample/models/realtime_event.dart';
+import 'package:sample/config/app_config.dart';
 
 class SupabaseService {
   static final SupabaseService _instance = SupabaseService._internal();
@@ -13,12 +14,8 @@ class SupabaseService {
   static bool _ready = false;
   static SupabaseClient? _client;
 
-  // Your actual Supabase credentials
-  static const String SUPABASE_URL = 'https://ekmvgwfrdrnivajlnorj.supabase.co';
-  static const String SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVrbXZnd2ZyZHJuaXZhamxub3JqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEyMjEwMjcsImV4cCI6MjA3Njc5NzAyN30.oOiYmA5w-xTWlyoDyZum2OomDBrTvncTiHGvXh9PiK8';
-
   static SupabaseClient get client {
-    if (_client == null) {
+    if (!_ready || _client == null) {
       throw Exception('Supabase not initialized. Call initialize() first.');
     }
     return _client!;
@@ -29,8 +26,8 @@ class SupabaseService {
   static Future<void> initialize() async {
     try {
       await Supabase.initialize(
-        url: SUPABASE_URL,
-        anonKey: SUPABASE_ANON_KEY,
+        url: AppConfig.supabaseUrl,
+        anonKey: AppConfig.supabaseAnonKey,
       );
       _client = Supabase.instance.client;
       _ready = true;
@@ -44,13 +41,26 @@ class SupabaseService {
   // Sugar Records
   static Future<List<SugarRecord>> getSugarRecords() async {
     try {
-      final response = await client
+      if (!_ready || _client == null) {
+        throw Exception('Supabase not initialized');
+      }
+      final response = await client!
           .from('sugar_records')
           .select()
           .order('created_at', ascending: false);
 
+      if (response == null) return [];
+      
       return (response as List)
-          .map((json) => SugarRecord.fromMap(json))
+          .map((json) {
+            try {
+              return SugarRecord.fromMap(json as Map<String, dynamic>);
+            } catch (e) {
+              print('Error parsing sugar record: $e');
+              return null;
+            }
+          })
+          .whereType<SugarRecord>()
           .toList();
     } catch (e) {
       print('Error fetching sugar records: $e');
@@ -60,10 +70,17 @@ class SupabaseService {
 
   static Future<void> saveSugarRecords(List<SugarRecord> records) async {
     try {
+      if (!_ready || _client == null) {
+        throw Exception('Supabase not initialized');
+      }
+      if (records.isEmpty) {
+        print('No records to save');
+        return;
+      }
       final recordsMap = records.map((record) => record.toMap()).toList();
       
       // Use upsert (insert or update) instead of delete + insert
-      await client.from('sugar_records').upsert(recordsMap);
+      await _client!.from('sugar_records').upsert(recordsMap);
       
       print('✅ Sugar records saved to Supabase');
     } catch (e) {

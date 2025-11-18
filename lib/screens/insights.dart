@@ -8,6 +8,7 @@ import 'package:sample/services/local_repository.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:sample/constants/app_icons.dart';
 import 'package:sample/widgets/responsive_builder.dart';
+import 'package:sample/utils/number_converter.dart';
 
 class InsightsScreen extends StatefulWidget {
   const InsightsScreen({Key? key}) : super(key: key);
@@ -239,7 +240,7 @@ class _InsightsScreenState extends State<InsightsScreen> with TickerProviderStat
               lineBarsData: [
                 LineChartBarData(
                   spots: _sugar.asMap().entries.map((e) => 
-                    FlSpot(e.key.toDouble(), e.value.heightCm.toDouble())
+                    FlSpot(NumberConverter.intToDouble(e.key), NumberConverter.intToDouble(e.value.heightCm))
                   ).toList(),
                   isCurved: true,
                   color: AppColors.success,

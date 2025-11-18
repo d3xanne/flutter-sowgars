@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:sample/utils/number_converter.dart';
 
 class SupplierTransaction {
   final String id;
@@ -47,7 +48,7 @@ class SupplierTransaction {
       itemName: map['item_name'] as String,
       quantity: (map['quantity'] as num).toInt(),
       unit: map['unit'] as String,
-      amount: (map['amount'] as num).toDouble(),
+      amount: NumberConverter.fromMap(map, 'amount'),
       date: map['date'] as String,
       notes: (map['notes'] ?? '') as String,
       archived: (map['archived'] ?? false) as bool,

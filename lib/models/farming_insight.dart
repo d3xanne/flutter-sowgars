@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:sample/utils/number_converter.dart';
 
 class FarmingInsight {
   final String id;
@@ -106,9 +107,9 @@ class FarmingInsight {
       harvestEstimation: map['harvest_estimation'] as String,
       fertilizerType: map['fertilizer_type'] as String,
       fertilizerAmount: map['fertilizer_amount'] as String,
-      estimatedIncome: (map['estimated_income'] as num).toDouble(),
-      totalCost: (map['total_cost'] as num).toDouble(),
-      netProfit: (map['net_profit'] as num).toDouble(),
+      estimatedIncome: NumberConverter.fromMap(map, 'estimated_income'),
+      totalCost: NumberConverter.fromMap(map, 'total_cost'),
+      netProfit: NumberConverter.fromMap(map, 'net_profit'),
       soilType: map['soil_type'] as String,
       climateZone: map['climate_zone'] as String,
       recommendations: map['recommendations'] as String,

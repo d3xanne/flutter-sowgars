@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:sample/services/weather_service.dart';
+import 'package:sample/utils/number_converter.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({Key? key}) : super(key: key);
@@ -476,7 +477,7 @@ class _WeatherScreenState extends State<WeatherScreen>
                   lineBarsData: [
                     LineChartBarData(
                       spots: _forecast.asMap().entries.map((entry) {
-                        return FlSpot(entry.key.toDouble(), entry.value.temperature);
+                        return FlSpot(NumberConverter.intToDouble(entry.key), entry.value.temperature);
                       }).toList(),
                       isCurved: true,
                       color: Colors.blue[400]!,

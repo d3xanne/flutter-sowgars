@@ -2,6 +2,7 @@ import 'package:sample/models/farming_insight.dart';
 import 'package:sample/models/sugar_record.dart';
 import 'package:sample/models/inventory_item.dart';
 import 'package:sample/models/supplier_transaction.dart';
+import 'package:sample/utils/number_converter.dart';
 
 class InsightGeneratorService {
   // Sugarcane varieties with their characteristics
@@ -194,7 +195,7 @@ class InsightGeneratorService {
       fertilizerAmount: fertilizerAmount,
       estimatedIncome: income,
       totalCost: costs['total'] ?? 0.0,
-      netProfit: netProfit.toDouble(),
+      netProfit: NumberConverter.toDouble(netProfit),
       soilType: soilType,
       climateZone: climateZone,
       recommendations: recommendations,
